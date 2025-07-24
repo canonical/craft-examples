@@ -1,29 +1,46 @@
 # Craft Examples
 
-This repository is home to code examples used in documentation and tests for the
-Starcraft tools.
+This repository is home to examples of software and craft projects used in documentation
+and tests for Starcraft tools.
 
-## Creating an example
+All examples are organized by branch. Nothing is merged into `main`.
 
-All examples should be categorized using branch names. That is, nothing should get
-merged into `main`! When creating a new example, use one of the two branch templates.
+When adding a new example, use one of the two branch templates.
 
-#### `project/<lang>/<name>`
-This should be used for any project files that should work as-is. Multiple project
-files for different tools can co-exist in these branches, but if you find yourself
-adding multiple project files for a single tool into one branch then you likely
-would be better off adding it into another branch.
+## Add an example craft project
+
+Craft projects are project files and configurations, like `snapcraft.yaml` and
+`rockcraft.yaml`, that work as-is.
+
+Use this branch name format:
+
+```
+project/<source-language-or-framework>/<name>
+```
 
 Examples:
-* `project/python/craft-cli`
-* `project/golang/chisel`
-* `project/rust/oxidizr`
 
-#### `src/<lang>/<name>`
-This should be used for full source trees for projects. These examples should not
+Branch name | Contents
+-|-
+`project/rust/oxidizr-snap` | The Snapcraft project files for the oxidizer snap.
+`project/go/kubernetes-charm` | The Charmcraft project files for the Kubernetes charm.
+`project/cpp/tensorflow-rock` | The Rockcraft project files for the Tensorflow rock.
+
+## Add an example software source
+
+These are the source tree of entire software projects. These examples should not
 be specific to any tool, though it is fine if only one tool uses the example.
 
+Use this branch name format:
+
+```
+src/<source-language-or-framework>/<name>
+```
+
 Examples:
-* `src/java/maven-hello`
-* `src/cpp/moon-buggy`
-* `src/python/pyfiglet`
+
+Branch name | Contents
+-|-
+`src/python/pyfiglet` | The source code for pyfiglet.
+`src/java/maven-hello` | The source code for a "Hello, world!" Java app using Maven.
+`src/cpp/moon-buggy` | The source code for the Moon Buggy app.

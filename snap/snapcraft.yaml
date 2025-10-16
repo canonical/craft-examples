@@ -16,7 +16,7 @@ license: "GPL-2.0 AND GPL-3.0 AND CC-BY-SA-4.0"
 website: https://github.com/canonical/iot-field-kernel-snap
 issues: https://github.com/canonical/iot-field-kernel-snap/issues
 
-# Specifies that this snap is intended only for cross-building.
+# Specifies that this snap can be cross-built.
 platforms:
   riscv64:
     build-on: [amd64, riscv64]
@@ -52,33 +52,6 @@ parts:
     # A lot of kernel options are disabled here; this dramatically shrinks
     # kernel snap size with the tradeoff of making the snapcraft.yaml a bit
     # more unwieldy.
-    # There are alternatives to this, of course! We could consolidate
-    # this into a defconfig file we then specify should be used using the
-    # kernel-kdefconfig plugin option. Indeed, this may be a more appropriate
-    # method as the kernel being built is no longer 1:1 equivalent to the
-    # Ubuntu kernel, so in some sense the kernel ABI has changed - supplying a
-    # defconfig disables this ABI information.
-    # We would do this by:
-    #
-    #   git clone https://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-riscv/+git/noble
-    #   cd noble
-    #   fakeroot debian/rules clean genconfigs || true
-    #   cat CONFIGS/riscv64-linux-gnu-config.flavour.generic > .config
-    #   echo { < all of our kernel options > ; } >> .config
-    #   make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- oldconfig
-    #   make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- savedefconfig
-    #
-    # Copy the created defconfig file to $CRAFT_PROJECT_SRC and modify this part:
-    #
-    #   kernel-kdefconfig: ["my_defconfig"]
-    #   override-pull: |
-    #     craftctl default
-    #     cp -f "${CRAFT_PROJECT_DIR}/my_defconfig" \
-    #       "${CRAFT_PART_SRC}/kernel/configs/my_defconfig"
-    #
-    # When the plugin runs `make <specified defconfigs>`, the kernel will
-    # correctly pick up my_defconfig in kernel/configs and generate a complete
-    # config from it. Then we can remove the kernel-kconfigs option.
     kernel-kconfigs:
       # Remove all unneeded DRM drivers
       - CONFIG_DRM_AMDGPU=n

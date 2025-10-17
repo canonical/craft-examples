@@ -1,15 +1,14 @@
 # The kernel snap
 
-The main focus of this example snap is to serve as an example for how to
-cross-build a kernel snap, including some of the more common modifications one
-would make when doing so.
+The main focus of this example is to show how to cross-build a kernel snap,
+including some of the more common modifications one would make when doing so.
 
 This snap isn't necessarily meant to function out-of-the-box; for a more
 maintained example, check the [IoT Field kernel snaps repository](https://github.com/canonical/iot-field-kernel-snap).
 
 ## The snap
 
-This snap is composed of four primary components:
+This snap is composed of four primary pieces:
 
 1) The official Debian Nezha kernel,
 2) The Debian linux firmware package,
@@ -33,7 +32,7 @@ Install a recent enough snapcraft and build:
 ## Continuing the exercise
 
 A lot of kernel options are disabled in this example. This dramatically shrinks
-kernel snap size (though it could be shrunk more), with the tradeoff of making
+kernel snap size (though it could be shrunk more), with the trade-off of making
 the `snapcraft.yaml` a bit more unwieldy.
 
 There are alternatives to this, of course! We could consolidate this into a

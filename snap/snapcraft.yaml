@@ -583,14 +583,17 @@ parts:
       # top-level. However, the kernel assumes firmware is in lib/firmware/. The
       # kernel plugin will create the appropriate symlink for us.
       lib/firmware: firmware/
-    stage:
-      - firmware/
-      - trim-firmware
-    override-prime: |
+    override-stage: |
       craftctl default
-      "${CRAFT_STAGE}/trim-firmware" "${CRAFT_PRIME}"
-    prime:
-      - -trim-firmware
+
+      kver="$(basename "${CRAFT_STAGE}/lib/modules/"*)"
+
+      "${CRAFT_STAGE}/copy-firmware"            \
+        -m "${CRAFT_STAGE}/lib/modules/${kver}" \
+        -f "${CRAFT_STAGE}/lib/firmware"        \
+        "${CRAFT_STAGE}/tmp"
+    override-prime: |
+      cp -rf "${CRAFT_STAGE}/tmp/lib/firmware" "${CRAFT_PRIME}/firmware"
 
   # Provide the initrd for Ubuntu Core.
   # The initrd includes important things such as snap-bootstrap which

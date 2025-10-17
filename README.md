@@ -50,7 +50,7 @@ We would do this by:
   export ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu-
   fakeroot debian/rules clean genconfigs || true
   cat CONFIGS/riscv64-linux-gnu-config.flavour.generic > .config
-  echo { < all of our kernel options > ; } >> .config
+  { echo CONFIG_FOO=x ; echo CONFIG_BAR=x ; ... ; } >> .config
   make oldconfig
   make savedefconfig
 ```
@@ -61,8 +61,8 @@ end means that our choices will take precedence over those when regenerating the
 config with `make oldconfig`.
 
 `make savedefconfig` will create a file named `defconfig` in the top-level of
-the kernel source. Copy the created defconfig file to `$CRAFT_PROJECT_SRC` and
-modify the `kernel` part:
+the kernel source. Copy the created defconfig file to the top-level of this
+example snap and modify the `kernel` part:
 
 ```yaml
   kernel-kdefconfig: ["my_defconfig"]

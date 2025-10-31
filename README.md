@@ -65,11 +65,11 @@ the kernel source. Copy the created defconfig file to the top-level of this
 example snap and modify the `kernel` part:
 
 ```yaml
-  kernel-kdefconfig: ["my_defconfig"]
+  kernel-kdefconfig: ["mine.config"]
   override-pull: |
     craftctl default
     cp -f "${CRAFT_PROJECT_DIR}/my_defconfig" \
-      "${CRAFT_PART_SRC}/kernel/configs/my_defconfig"
+      "${CRAFT_PART_SRC}/kernel/configs/mine.config"
 ```
 
 And remove the `kernel-kconfigs` option.

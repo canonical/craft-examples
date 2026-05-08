@@ -25,6 +25,7 @@ Branch name | Contents
 `project/rust/oxidizr-snap` | The Snapcraft project files for the oxidizer snap.
 `project/go/kubernetes-charm` | The Charmcraft project files for the Kubernetes charm.
 `project/cpp/tensorflow-rock` | The Rockcraft project files for the Tensorflow rock.
+`project/rust/xsv`            | The xsv project files for the xsv a CSV command line toolkit
 
 ## Add an example software source
 
@@ -44,3 +45,4 @@ Branch name | Contents
 `src/python/pyfiglet` | The source code for pyfiglet.
 `src/java/maven-hello` | The source code for a "Hello, world!" Java app using Maven.
 `src/cpp/moon-buggy` | The source code for the Moon Buggy app.
+`src/rust/xsv`       | The source code for xsv

@@ -46,9 +46,9 @@ parts:
   # can reduce kernel snap size.
   kernel:
     plugin: kernel
-    source: https://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-riscv/+git/noble
-    source-depth: 1
-    source-type: git
+    kernel-ubuntu-release-name: noble
+    kernel-ubuntu-kconfigflavour: riscv
+    kernel-ubuntu-abinumber: Ubuntu-riscv-6.17-6.17.0-35.35.1_24.04.1
     # A lot of kernel options are disabled here; this dramatically shrinks
     # kernel snap size with the tradeoff of making the snapcraft.yaml a bit
     # more unwieldy.
@@ -505,11 +505,9 @@ parts:
       - CONFIG_RTW88_SDIO=m
       - CONFIG_RTW88_8723D=m
       - CONFIG_RTW88_8723DS=m
-    build-packages:
-      - on riscv64:
-          - gcc
-      - on amd64:
-          - gcc-${CRAFT_ARCH_TRIPLET_BUILD_FOR}
+    stage-packages:
+      - linux-firmware:${CRAFT_ARCH_BUILD_FOR}
+      - wireless-regdb
     override-build: |
       craftctl default
 
@@ -546,21 +544,22 @@ parts:
       - dtbs/sun20i-d1-lichee-rv-dock.dtb
       - dtbs/sun20i-d1-lichee-rv.dtb
       - dtbs/sun20i-d1-nezha.dtb
-      - kernel.img*
+      - firmware/
       - lib/
       - licenses/
       - modules/
-    # Notably, the kernel.img* files are not primed; that is because they are
-    # provided by the FIT image part further below.
-    # If we opted to not use a FIT image, we would add kernel.img* to this section.
+      - vmlinuz*
+    override-prime: |
+      craftctl default
+
+      "${CRAFT_STAGE}/trim-firmware" "${CRAFT_PRIME}"
+    # Notably, the vmlinuz* files are not primed; that is because they are
+    # provided by the FIT image part further below. If we opted to not use a FIT
+    # image, we would add vmlinuz* to this section.
     prime:
       - System.map-*
       - config-*
-      - dtbs/sun20i-d1-lichee-rv-86-panel-480p.dtb
-      - dtbs/sun20i-d1-lichee-rv-86-panel-720p.dtb
-      - dtbs/sun20i-d1-lichee-rv-dock.dtb
-      - dtbs/sun20i-d1-lichee-rv.dtb
-      - dtbs/sun20i-d1-nezha.dtb
+      - firmware/
       - lib/
       - licenses/
       - modules/
@@ -575,25 +574,10 @@ parts:
     source: https://git.launchpad.net/canonical-kernel-snaps
     source-depth: 1
     source-type: git
-    stage-packages:
-      - linux-firmware:${CRAFT_ARCH_BUILD_FOR}
-      - wireless-regdb
-    organize:
-      # On Ubuntu Core, the firmware directory is expected to be at the
-      # top-level. However, the kernel assumes firmware is in lib/firmware/. The
-      # kernel plugin will create the appropriate symlink for us.
-      lib/firmware: firmware/
-    override-stage: |
-      craftctl default
-
-      kver="$(basename "${CRAFT_STAGE}/lib/modules/"*)"
-
-      "${CRAFT_STAGE}/copy-firmware"            \
-        -m "${CRAFT_STAGE}/lib/modules/${kver}" \
-        -f "${CRAFT_STAGE}/lib/firmware"        \
-        "${CRAFT_STAGE}/tmp"
-    override-prime: |
-      cp -rf "${CRAFT_STAGE}/tmp/lib/firmware" "${CRAFT_PRIME}/firmware"
+    stage:
+      - trim-firmware
+    prime:
+      - -*
 
   # Provide the initrd for Ubuntu Core.
   # The initrd includes important things such as snap-bootstrap which
@@ -635,7 +619,7 @@ components:
     type: kernel-modules
     adopt-info: kernel
     summary: The Realtek 8723ds WiFi module and firmware
-    description: |
+    description: |-
       The 8723ds Realtek WiFi kernel module used by the Sipeed LicheeRV. This
       module is useless on the Nezha board which also uses this kernel. To save
       on some small disk space, we package this module separately.

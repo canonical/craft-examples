@@ -25,7 +25,7 @@ to facilitate experimentation and native building.
 Install a recent enough snapcraft and build:
 
 ```bash
-  snap install --classic --channel=8.x/stable snapcraft
+  snap install --classic --channel=9.x/stable snapcraft
   snapcraft
 ```
 

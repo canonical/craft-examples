@@ -1,9 +1,8 @@
 # Craft Examples
 
-This repository is home to examples of software and craft projects used in documentation
-and tests for Starcraft tools.
+This repository is home to well-made craft projects, such as snaps, charms, rocks, images, debs, and bins. They are kept here for study and reuse in your own learning and projects. The official documentation for the crafts use these projects as exemplars.
 
-All examples are organized by branch. Nothing is merged into `main`.
+All projects are organized by branch. No code is merged into `main`.
 
 When adding a new example, use one of the two branch templates.
 
